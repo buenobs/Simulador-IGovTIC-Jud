@@ -215,8 +215,15 @@ const PERGUNTAS = [
   ]},
   {id:"P10",tema:"T3",peso:{geral:10,TRT:16,TRE:15},
    titulo:"Serviços digitais na Carta de Serviços",itens:[
-    {id:"10.1",desc:"Percentual de serviços disponibilizados digitalmente",tipo:"lista",
-     opcoes:[{l:"Sem Carta de Serviços",v:0},{l:"0% a 40%",v:0},{l:"41% a 60%",v:40},{l:"61% a 80%",v:60},{l:"81% a 95%",v:80},{l:"95% a 100%",v:100}]},
+    {id:"10.1",ev:true,desc:"Percentual de serviços disponibilizados digitalmente na Carta de Serviços",tipo:"lista",
+     opcoes:[
+       {l:"Não existe uma Carta de Serviços",v:0},
+       {l:"Entre 0% e 40% dos serviços possuem uma alternativa digital.",v:0},
+       {l:"Entre 41% e 60% dos serviços possuem uma alternativa digital.",v:40},
+       {l:"Entre 61% e 80% dos serviços possuem uma alternativa digital.",v:60},
+       {l:"Entre 81% e 95% dos serviços possuem uma alternativa digital.",v:80},
+       {l:"Entre 95% e 100% dos serviços possuem uma alternativa digital.",v:100},
+     ]},
   ]},
   // CORRIGIDO: P11 — 11.2.1 e 11.2.2 são Sim/Não independentes; soma bruta pode passar de 100 (cap aplicado)
   {id:"P11",tema:"T3",peso:{geral:25,TRT:31,TRE:0},notaTRE:"Não se aplica aos TREs",
