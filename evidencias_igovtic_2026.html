@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidências iGovTIC-JUD 2026</title>
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --border2: #ccc9be;
+    --text: #1a1917;
+    --text2: #5c5a55;
+    --text3: #9c9a94;
+    --accent: #1a56a4;
+    --accent-bg: #e8f0fb;
+    --accent-text: #0f3572;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --font: 'Segoe UI', system-ui, sans-serif;
+      --s-pronta-bg: #e3f2fd; --s-pronta-text: #0d47a1; --s-pronta-border: #90caf9;
+    --s-valid-bg: #e8f5e9; --s-valid-text: #1b5e20; --s-valid-border: #81c784;
+    --s-rejeit-bg: #ffebee; --s-rejeit-text: #b71c1c; --s-rejeit-border: #ef9a9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; }
+
+  /* ── header ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .header-title { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .header-sub { font-size: 12px; color: var(--text3); margin-top: 1px; }
+  .header-actions { display: flex; gap: 8px; }
+
+  /* ── buttons ── */
+  .btn {
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius);
+    border: 1px solid var(--border2); background: var(--surface);
+    color: var(--text2); cursor: pointer; white-space: nowrap; line-height: 1;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .btn:hover { background: var(--surface2); border-color: var(--border2); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #1648d0; border-color: #1648d0; }
+  .btn-sm { font-size: 11px; padding: 4px 10px; }
+
+  /* ── layout ── */
+  .main { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+
+  /* ── metrics ── */
+  .metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+  .metric-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+  .metric-value.azul { color: var(--accent); }
+  .metric-value.verde { color: #1b7e3a; }
+  .metric-value.vermelho { color: #b71c1c; }
+
+  /* ── toolbar ── */
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
+  .toolbar input[type=text], .toolbar select {
+    font-family: var(--font); font-size: 13px; padding: 7px 11px;
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    background: var(--surface); color: var(--text); height: 34px;
+  }
+  .toolbar input[type=text] { flex: 1; min-width: 160px; }
+  .toolbar input[type=text]:focus, .toolbar select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* ── sessão ── */
+  .session-bar {
+    background: var(--accent-bg); border: 1px solid #b8d0f4; border-radius: var(--radius);
+    padding: 10px 14px; margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .session-bar label { font-size: 12px; color: var(--accent-text); font-weight: 500; white-space: nowrap; }
+  .session-bar input[type=text] {
+    font-family: var(--font); font-size: 13px; padding: 5px 10px;
+    border: 1px solid #b8d0f4; border-radius: var(--radius);
+    background: var(--surface); color: var(--text); flex: 1; min-width: 160px;
+  }
+  .session-bar span { font-size: 11px; color: var(--accent-text); }
+
+  /* ── temas ── */
+  .tema { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; overflow: hidden; }
+  .tema-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; cursor: pointer; user-select: none;
+    background: var(--surface); transition: background 0.1s;
+  }
+  .tema-header:hover { background: var(--surface2); }
+  .tema-id { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.08em; min-width: 26px; }
+  .tema-nome { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+  .tema-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 99px;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text2);
+  }
+  .tema-chevron { font-size: 11px; color: var(--text3); transition: transform 0.18s; }
+  .tema-chevron.open { transform: rotate(90deg); }
+  .tema-body { display: none; }
+  .tema-body.open { display: block; }
+
+  /* ── perguntas ── */
+  .pergunta { border-top: 1px solid var(--border); padding: 14px 16px; }
+  .perg-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .perg-id { font-size: 11px; font-weight: 700; color: var(--text3); min-width: 30px; padding-top: 1px; }
+  .perg-titulo { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4; }
+  .perg-link-row { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; margin-left: 40px; }
+  .perg-link-row label { font-size: 11px; color: var(--text3); white-space: nowrap; }
+  .perg-link-row input[type=text] {
+    font-family: var(--font); font-size: 12px; padding: 4px 8px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface2); color: var(--text); flex: 1; min-width: 0;
+  }
+  .perg-link-row input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: 1px; background: var(--surface); }
+  .perg-link-row a { font-size: 11px; color: var(--accent); text-decoration: none; white-space: nowrap; }
+  .perg-link-row a:hover { text-decoration: underline; }
+
+  /* ── evidências ── */
+  .ev-lista { margin-left: 40px; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+  .ev-card {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 9px 12px; background: var(--surface2);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .ev-row1 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .ev-nome { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; min-width: 0; }
+  .ev-autor { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .ev-obs-text { font-size: 11px; color: var(--text2); margin-top: 2px; line-height: 1.4; font-style: italic; }
+  .badge-status {
+    font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px;
+    cursor: pointer; border: none; font-family: var(--font); white-space: nowrap;
+    transition: opacity 0.1s;
+  }
+  .badge-status:hover { opacity: 0.8; }
+  .s-pronta       { background: var(--s-pronta-bg); color: var(--s-pronta-text); border: 1px solid var(--s-pronta-border) !important; }
+  .s-validada     { background: var(--s-valid-bg);  color: var(--s-valid-text);  border: 1px solid var(--s-valid-border) !important; }
+  .s-rejeitada    { background: var(--s-rejeit-bg); color: var(--s-rejeit-text); border: 1px solid var(--s-rejeit-border) !important; }
+  .btn-editar {
+    font-family: var(--font); font-size: 11px; padding: 2px 8px;
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    background: transparent; color: var(--text2); cursor: pointer;
+  }
+  .btn-editar:hover { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+  .btn-excluir {
+    font-size: 15px; line-height: 1; background: none; border: none;
+    color: var(--text3); cursor: pointer; padding: 0 2px;
+  }
+  .btn-excluir:hover { color: #b71c1c; }
+  .perg-add-btn {
+    margin-left: 40px; font-family: var(--font); font-size: 12px;
+    padding: 5px 12px; border-radius: var(--radius);
+    border: 1px dashed var(--border2); background: transparent;
+    color: var(--text3); cursor: pointer;
+  }
+  .perg-add-btn:hover { background: var(--surface2); color: var(--text2); }
+  .sem-ev { margin-left: 40px; font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 6px; }
+
+  /* ── modal ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.3); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    width: min(460px, 94vw); max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  .modal h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 1rem; }
+  .form-group { margin-bottom: 12px; }
+  .form-group label { font-size: 12px; color: var(--text2); font-weight: 500; display: block; margin-bottom: 4px; }
+  .form-group input[type=text],
+  .form-group textarea,
+  .form-group select {
+    width: 100%; font-family: var(--font); font-size: 13px;
+    padding: 8px 10px; border: 1px solid var(--border2);
+    border-radius: var(--radius); background: var(--surface);
+    color: var(--text);
+  }
+  .form-group input[type=text]:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .form-group textarea { resize: vertical; min-height: 64px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1rem; }
+
+  /* ── toast ── */
+  .toast {
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    background: #1a1917; color: #fff; font-size: 13px;
+    padding: 10px 18px; border-radius: var(--radius);
+    opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 300;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ── rodapé info ── */
+  .info-strip {
+    background: var(--accent-bg); border-top: 1px solid #c8d9f5;
+    padding: 6px 1.5rem; font-size: 11px; color: var(--accent-text);
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .info-strip span { display: flex; align-items: center; gap: 5px; }
+
+  /* sugestões */
+  .sugestoes-box { margin-left: 40px; margin-top: 4px; margin-bottom: 4px; }
+  .sugestoes-titulo {
+    font-size: 11px; font-weight: 600; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+  }
+  .sugestoes-titulo::before { content: '★'; color: #b07d00; font-size: 10px; }
+  .sug-card {
+    border: 1px dashed #c8b96b; border-radius: var(--radius);
+    padding: 8px 10px; background: #fefce8; margin-bottom: 5px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .sug-nome { font-size: 12px; font-weight: 500; color: #3a2e00; }
+  .sug-obs  { font-size: 11px; color: #5a4a10; line-height: 1.4; font-style: italic; }
+  .sug-add  {
+    font-family: var(--font); font-size: 11px; padding: 3px 10px;
+    border-radius: var(--radius); border: 1px solid #b07d00;
+    background: transparent; color: #7a5500; cursor: pointer; align-self: flex-start;
+    margin-top: 2px;
+  }
+  .sug-add:hover { background: #fef3c7; }
+  /* diagnóstico complementar */
+  .dc-section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); margin-top: 1.5rem;
+    overflow: hidden;
+  }
+  .dc-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; cursor: pointer; user-select: none;
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+  }
+  .dc-label {
+    font-size: 11px; font-weight: 700; color: var(--text3);
+    letter-spacing: 0.08em; min-width: 26px;
+  }
+  .dc-titulo { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+  .dc-body { display: none; }
+  .dc-body.open { display: block; }
+  .dc-perg { border-top: 1px solid var(--border); padding: 14px 16px; }
+  .dc-perg-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .dc-perg-id { font-size: 11px; font-weight: 700; color: var(--text3); min-width: 30px; padding-top: 1px; }
+  .dc-perg-titulo { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4; }
+  .dc-nota { font-size: 11px; color: var(--text3); margin-left: 40px; margin-bottom: 8px; font-style: italic; }
+  @media (max-width: 600px) {
+    .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .header { padding: 0 1rem; }
+    .main { padding: 1rem 1rem 4rem; }
+  }
+  /* modal de mesclagem */
+  .merge-modal { width: min(580px, 96vw); max-height: 82vh; overflow-y: auto; }
+  .merge-section { margin-bottom: 1rem; }
+  .merge-section-title {
+    font-size: 12px; font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 6px; padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .merge-item {
+    font-size: 12px; padding: 6px 10px; border-radius: var(--radius);
+    margin-bottom: 4px; line-height: 1.4;
+  }
+  .merge-item.adicionado { background: var(--s-valid-bg); color: var(--s-valid-text); border: 1px solid var(--s-valid-border); }
+  .merge-item.atualizado { background: var(--s-pronta-bg); color: var(--s-pronta-text); border: 1px solid var(--s-pronta-border); }
+  .merge-item.conflito   { background: var(--s-rejeit-bg); color: var(--s-rejeit-text); border: 1px solid var(--s-rejeit-border); }
+  .merge-item.ignorado   { background: var(--color-surface2, #f0efe9); color: var(--text3); border: 1px solid var(--border); }
+  .merge-item strong { font-weight: 600; }
+  .merge-empty { font-size: 12px; color: var(--text3); font-style: italic; }
+  .merge-resumo {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    background: var(--surface2, #f0efe9); border-radius: var(--radius);
+    padding: 10px 14px; margin-bottom: 1rem; font-size: 12px;
+  }
+  .merge-resumo span { display: flex; align-items: center; gap: 5px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="header-title">Gestão de Evidências — iGovTIC-JUD 2026</div>
+    <div class="header-sub">CNJ · Conselho Nacional de Justiça</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="exportarJSON()">⬇ Exportar JSON</button>
+    <button class="btn btn-primary" onclick="document.getElementById('importInput').click()">⬆ Mesclar JSON</button>
+    <input type="file" id="importInput" accept=".json" style="display:none" onchange="importarJSON(event)">
+  </div>
+</div>
+
+<!-- LEGENDA STATUS -->
+<div class="info-strip">
+  <span>Use ✎ Editar para alterar status · Exporte seu JSON e compartilhe para mesclar com outros colaboradores</span>
+  <span><span style="background:var(--s-pronta-bg);color:var(--s-pronta-text);padding:1px 7px;border-radius:99px;font-size:10px;border:1px solid var(--s-pronta-border)">Pronta p/ validação</span></span>
+  <span>→ <span style="background:var(--s-valid-bg);color:var(--s-valid-text);padding:1px 7px;border-radius:99px;font-size:10px;border:1px solid var(--s-valid-border)">Validada</span></span>
+  <span>→ <span style="background:var(--s-rejeit-bg);color:var(--s-rejeit-text);padding:1px 7px;border-radius:99px;font-size:10px;border:1px solid var(--s-rejeit-border)">Rejeitada / revisar</span></span>
+</div>
+
+<div class="main">
+
+  <!-- SESSÃO -->
+  <div class="session-bar">
+    <label>Instituição / Sessão:</label>
+    <input type="text" id="sessaoNome" placeholder="Ex: TRT 10ª Região — ciclo 2026" oninput="salvarSessao()">
+    <span id="sessaoInfo"></span>
+  </div>
+
+  <!-- MÉTRICAS -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Total de evidências</div>
+      <div class="metric-value" id="m-total">0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Prontas p/ validação</div>
+      <div class="metric-value azul" id="m-prontas">0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Validadas</div>
+      <div class="metric-value verde" id="m-valid">0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">A revisar</div>
+      <div class="metric-value vermelho" id="m-rev">0</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <select id="busca" onchange="render()" style="flex:1;min-width:200px">
+      <option value="">Todas as perguntas</option>
+    </select>
+    <select id="filtroStatus" onchange="render()">
+      <option value="">Todos os status</option>
+      <option value="pronta">Pronta para validação</option>
+      <option value="validada">Validada</option>
+      <option value="rejeitada">Rejeitada / revisar</option>
+    </select>
+    <select id="filtroTema" onchange="render()">
+      <option value="">Todos os temas</option>
+    </select>
+  </div>
+
+  <!-- TEMAS -->
+  <div id="container"></div>
+
+</div><!-- /main -->
+
+<!-- MODAL ADICIONAR -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)fecharModal()">
+  <div class="modal">
+    <h3 id="modalTitulo">Adicionar evidência</h3>
+    <input type="hidden" id="fEid" value="">
+    <div class="form-group">
+      <label>Nome / descrição da evidência *</label>
+      <input type="text" id="fNome" placeholder="Ex: Portaria nº 12/2025 – PDTIC aprovado pelo Presidente">
+    </div>
+    <div class="form-group">
+      <label>Responsável pela produção *</label>
+      <input type="text" id="fAutor" placeholder="Nome do servidor ou equipe responsável">
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select id="fStatus">
+          <option value="pronta">Pronta para validação</option>
+        <option value="validada">Validada pelo gestor</option>
+        <option value="rejeitada">Rejeitada / revisar</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Observação (opcional)</label>
+      <textarea id="fObs" placeholder="Nome do arquivo, data de conclusão, orientações ao gestor..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarEvidencia()">Salvar evidência</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL MESCLAGEM -->
+<div class="modal-overlay" id="mergeOverlay" onclick="if(event.target===this)fecharMerge()">
+  <div class="modal merge-modal">
+    <h3>Resultado da mesclagem</h3>
+    <div class="merge-resumo" id="mergeResumo"></div>
+    <div id="mergeCorpo"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="fecharMerge()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  DADOS — 28 perguntas em 8 temas
+// ═══════════════════════════════════════════
+const TEMAS = [
+  { id:'T1', nome:'Estruturas Organizacionais e Macroprocessos', perguntas:[
+    { id:'P1',  titulo:'Coordenação dos macroprocessos e funções gerenciais de TIC' },
+    { id:'P2',  titulo:'Processos de planejamento orçamentário, gerenciamento de projetos e contratos de TIC' }
+  ]},
+  { id:'T2', nome:'Políticas e Planejamento', perguntas:[
+    { id:'P3',  titulo:'Elaboração, entrega e execução dos Planos previstos na ENTIC-JUD' },
+    { id:'P4',  titulo:'Comitê de Governança de TIC instituído e atuante' },
+    { id:'P5',  titulo:'Comitê de Gestão de TIC instituído e atuante' },
+    { id:'P6',  titulo:'PDTIC vigente e nível de execução' },
+    { id:'P7',  titulo:'Artefatos do Plano de Contratações STIC 2025 disponibilizados' }
+  ]},
+  { id:'T3', nome:'Transformação Digital', perguntas:[
+    { id:'P8',  titulo:'Plano de Transformação Digital (PTD)' },
+    { id:'P9',  titulo:'Ações de Transformação Digital realizadas' },
+    { id:'P10', titulo:'Serviços digitais na Carta de Serviços' },
+    { id:'P11', titulo:'Plataforma Digital do Poder Judiciário (PDPJ-Br)' },
+    { id:'P12', titulo:'Programa Justiça 4.0' },
+    { id:'P13', titulo:'Ações para implementação de Inteligência Artificial' }
+  ]},
+  { id:'T4', nome:'Atendimento e Suporte ao Usuário', perguntas:[
+    { id:'P14', titulo:'Funcionamento da Central de Serviços de TIC' },
+    { id:'P15', titulo:'Central de Atendimento reconhecida por excelência (ciclo anterior)' }
+  ]},
+  { id:'T5', nome:'Pessoas', perguntas:[
+    { id:'P16', titulo:'Servidores gestores e técnicos de TIC' },
+    { id:'P17', titulo:'Dimensionamento e capacitação da força de trabalho de TIC' }
+  ]},
+  { id:'T6', nome:'Infraestrutura Tecnológica e Serviços em Nuvem', perguntas:[
+    { id:'P18', titulo:'Infraestrutura de TIC' },
+    { id:'P19', titulo:'Contratações de provedores de nuvem' },
+    { id:'P20', titulo:'Prestação de serviços em nuvem' },
+    { id:'P21', titulo:'Gerenciamento de serviços de TIC implementados' }
+  ]},
+  { id:'T7', nome:'Riscos, Segurança da Informação e Proteção de Dados', perguntas:[
+    { id:'P22', titulo:'Comitê de Governança de Segurança da Informação (CGSI)' },
+    { id:'P23', titulo:'Nível de Segurança da Infraestrutura Crítica e Governança da Segurança da Informação (ENSEC-PJ)' },
+    { id:'P24', titulo:'Plano de Gestão de Riscos de TIC' },
+    { id:'P25', titulo:'Política de Segurança da Informação (PSI)' }
+  ]},
+  { id:'T8', nome:'Sistemas de Informação', perguntas:[
+    { id:'P26', titulo:'Adequação dos sistemas de informação aos padrões de interoperabilidade do CNJ' },
+    { id:'P27', titulo:'Processo de desenvolvimento e sustentação de sistemas' },
+    { id:'P28', titulo:'Soluções de TIC (portfólio de sistemas)' }
+  ]}
+];
+
+const STATUS = {
+  pronta:      'Pronta p/ validação',
+  validada:    'Validada',
+  rejeitada:   'Rejeitada / revisar'
+};
+const STATUS_ORDEM = ['pronta','validada','rejeitada'];
+
+const STORAGE_KEY = 'igovtic_ev_v1';
+
+// Estado
+let dados = { sessao:'', perguntas:{} }; // perguntas[pid] = { link:'', evidencias:[] }
+let sectionsOpen = {};
+let modalPid = null;
+
+// ═══════════════════════════════════════════
+//  PERSISTÊNCIA
+// ═══════════════════════════════════════════
+function carregar() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) dados = JSON.parse(raw);
+  } catch(e) {}
+  document.getElementById('sessaoNome').value = dados.sessao || '';
+  atualizarSessaoInfo();
+}
+
+function salvar() {
+  dados.sessao = document.getElementById('sessaoNome').value.trim();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+}
+
+function salvarSessao() { salvar(); atualizarSessaoInfo(); }
+
+function atualizarSessaoInfo() {
+  const total = contarTotal();
+  const ts = dados.ultimaSalvagem ? new Date(dados.ultimaSalvagem).toLocaleString('pt-BR') : null;
+  document.getElementById('sessaoInfo').textContent = ts ? `Salvo: ${ts} · ${total} evidência(s)` : `${total} evidência(s)`;
+}
+
+function getPergunta(pid) {
+  if (!dados.perguntas[pid]) dados.perguntas[pid] = { link:'', evidencias:[] };
+  return dados.perguntas[pid];
+}
+
+function salvarLink(pid, val) {
+  getPergunta(pid).link = val.trim();
+  salvar();
+}
+
+function exportarJSON() {
+  dados.ultimaSalvagem = new Date().toISOString();
+  salvar();
+  const blob = new Blob([JSON.stringify(dados, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'evidencias_igovtic_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  toast('JSON exportado com sucesso.');
+}
+
+function importarJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const externo = JSON.parse(ev.target.result);
+      if (!externo.perguntas) throw new Error('Formato inválido');
+      mesclarDados(externo);
+    } catch(err) { alert('Arquivo inválido ou corrompido.'); }
+  };
+  r.readAsText(file);
+  e.target.value = '';
+}
+
+function mesclarDados(externo) {
+  const resultado = { adicionados:[], atualizados:[], conflitos:[], ignorados:[] };
+
+  // percorrer todas as perguntas do arquivo externo
+  Object.entries(externo.perguntas || {}).forEach(([pid, pdExt]) => {
+    const pdLocal = getPergunta(pid);
+
+    // mesclar link OneDrive: usar o preenchido mais recente
+    if (pdExt.link && !pdLocal.link) pdLocal.link = pdExt.link;
+
+    // mesclar evidências
+    (pdExt.evidencias || []).forEach(evExt => {
+      const evLocal = pdLocal.evidencias.find(e => e.id === evExt.id);
+
+      if (!evLocal) {
+        // evidência nova — adicionar
+        pdLocal.evidencias.push({ ...evExt });
+        resultado.adicionados.push({ pid, ev: evExt });
+      } else {
+        // evidência existente — comparar timestamps
+        const tsExt   = new Date(evExt.ultimaAlteracao   || evExt.data || 0).getTime();
+        const tsLocal = new Date(evLocal.ultimaAlteracao || evLocal.data || 0).getTime();
+
+        if (tsExt > tsLocal) {
+          // externo é mais recente — atualizar
+          resultado.atualizados.push({ pid, evAntigo: { ...evLocal }, evNovo: evExt });
+          Object.assign(evLocal, evExt);
+        } else if (tsExt === tsLocal && JSON.stringify(evExt) !== JSON.stringify(evLocal)) {
+          // mesmo timestamp mas conteúdo diferente — conflito
+          resultado.conflitos.push({ pid, evLocal: { ...evLocal }, evExt });
+        } else {
+          // local é mais recente ou idêntico — ignorar externo
+          resultado.ignorados.push({ pid, ev: evLocal });
+        }
+      }
+    });
+  });
+
+  // marcar timestamp de alteração nas futuras edições
+  dados.ultimaSalvagem = new Date().toISOString();
+  salvar();
+  render();
+  atualizarMetricas();
+  atualizarSessaoInfo();
+  exibirResultadoMerge(resultado);
+}
+
+function exibirResultadoMerge(r) {
+  const total = r.adicionados.length + r.atualizados.length + r.conflitos.length + r.ignorados.length;
+  document.getElementById('mergeResumo').innerHTML = `
+    <span style="color:var(--s-valid-text)">✔ ${r.adicionados.length} adicionada${r.adicionados.length!==1?'s':''}</span>
+    <span style="color:var(--s-pronta-text)">↑ ${r.atualizados.length} atualizada${r.atualizados.length!==1?'s':''}</span>
+    <span style="color:var(--s-rejeit-text)">⚠ ${r.conflitos.length} conflito${r.conflitos.length!==1?'s':''}</span>
+    <span style="color:var(--text3)">— ${r.ignorados.length} sem alteração</span>`;
+
+  let html = '';
+
+  if (r.adicionados.length) {
+    html += `<div class="merge-section">
+      <div class="merge-section-title">Evidências adicionadas (${r.adicionados.length})</div>
+      ${r.adicionados.map(x=>`<div class="merge-item adicionado"><strong>${x.pid}</strong> · ${escHtml(x.ev.nome)} <span style="opacity:.7">— ${escHtml(x.ev.autor)}</span></div>`).join('')}
+    </div>`;
+  }
+
+  if (r.atualizados.length) {
+    html += `<div class="merge-section">
+      <div class="merge-section-title">Evidências atualizadas (versão mais recente do arquivo importado)</div>
+      ${r.atualizados.map(x=>`<div class="merge-item atualizado"><strong>${x.pid}</strong> · ${escHtml(x.evNovo.nome)}
+        <br><span style="opacity:.7;font-size:10px">Anterior: "${escHtml(x.evAntigo.nome)}" — status ${x.evAntigo.status} → ${x.evNovo.status}</span></div>`).join('')}
+    </div>`;
+  }
+
+  if (r.conflitos.length) {
+    html += `<div class="merge-section">
+      <div class="merge-section-title">⚠ Conflitos detectados (mesmo ID, timestamps iguais, conteúdo diferente — mantida versão local)</div>
+      ${r.conflitos.map(x=>`<div class="merge-item conflito"><strong>${x.pid}</strong> · ${escHtml(x.evLocal.nome)}
+        <br><span style="font-size:10px">Local: status "${x.evLocal.status}" · Importado: status "${x.evExt.status}" — exporte ambas as versões e alinhe manualmente.</span></div>`).join('')}
+    </div>`;
+  }
+
+  if (!r.adicionados.length && !r.atualizados.length && !r.conflitos.length) {
+    html += `<div class="merge-empty">Nenhuma diferença encontrada — o arquivo importado está sincronizado com a versão local.</div>`;
+  }
+
+  document.getElementById('mergeCorpo').innerHTML = html;
+  document.getElementById('mergeOverlay').classList.add('open');
+}
+
+function fecharMerge() {
+  document.getElementById('mergeOverlay').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════
+//  MÉTRICAS
+// ═══════════════════════════════════════════
+function contarTotal() {
+  return Object.values(dados.perguntas).reduce((a,p)=>a+(p.evidencias||[]).length, 0);
+}
+
+function atualizarMetricas() {
+  let total=0, prontas=0, valid=0, rev=0;
+  Object.values(dados.perguntas).forEach(p => {
+    (p.evidencias||[]).forEach(ev => {
+      total++;
+      if (ev.status==='pronta')    prontas++;
+      if (ev.status==='validada')  valid++;
+      if (ev.status==='rejeitada') rev++;
+    });
+  });
+  document.getElementById('m-total').textContent  = total;
+  document.getElementById('m-prontas').textContent = prontas;
+  document.getElementById('m-valid').textContent   = valid;
+  document.getElementById('m-rev').textContent     = rev;
+}
+
+// ═══════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════
+function render() {
+  const buscaPid    = document.getElementById('busca').value;
+  const fStatus     = document.getElementById('filtroStatus').value;
+  const fTema       = document.getElementById('filtroTema').value;
+  const container   = document.getElementById('container');
+  container.innerHTML = '';
+
+  TEMAS.forEach(tema => {
+    if (fTema && fTema !== tema.id) return;
+
+    let temaVisible = false;
+    const pergsHtml = tema.perguntas.map(p => {
+      const pd = getPergunta(p.id);
+      let evs = pd.evidencias || [];
+
+      // filtro pergunta
+      if (buscaPid && buscaPid !== p.id) return '';
+
+      // filtro status
+      if (fStatus) evs = evs.filter(ev => ev.status === fStatus);
+
+      const evsFiltradas = evs;
+
+      temaVisible = true;
+
+      // link OneDrive
+      const linkVal = pd.link || '';
+      const linkHref = linkVal ? `<a href="${encodeURI(linkVal)}" target="_blank" rel="noopener">↗ Abrir pasta</a>` : '';
+
+      // cards de evidência
+      const evsHtml = evsFiltradas.length === 0
+        ? `<div class="sem-ev">Nenhuma evidência registrada${fStatus ? ' com este status' : ''}.</div>`
+        : evsFiltradas.map((ev,ei) => `
+          <div class="ev-card" id="evc-${ev.id}">
+            <div class="ev-row1">
+              <span class="ev-nome">${escHtml(ev.nome)}</span>
+              <span class="badge-status s-${ev.status}">${STATUS[ev.status]}</span>
+              <button class="btn-editar" title="Editar" onclick="editarEvidenciaIdx('${p.id}',${ei})">✎ Editar</button>
+              <button class="btn-excluir" title="Remover" onclick="deletarIdx('${p.id}',${ei})">×</button>
+            </div>
+            <div class="ev-autor">Por: ${escHtml(ev.autor)} · ${ev.data}</div>
+            ${ev.obs ? `<div class="ev-obs-text">${escHtml(ev.obs)}</div>` : ''}
+          </div>`).join('');
+
+      // sugestões inline
+      const sugsData = (SUGESTOES_2026[p.id] || {}).evidencias || [];
+      const sugsHtml = sugsData.length === 0 ? '' : `
+        <div class="sugestoes-box">
+          <div class="sugestoes-titulo">Sugestões baseadas no ciclo 2025</div>
+          ${sugsData.map((s,si) => `
+            <div class="sug-card">
+              <span class="sug-nome">${escHtml(s.nome)}</span>
+              <span class="sug-obs">${escHtml(s.obs)}</span>
+              <button class="sug-add" onclick="adicionarSugestaoIdx('${p.id}',${si})">+ Usar esta sugestão</button>
+            </div>`).join('')}
+        </div>`;
+
+      return `
+        <div class="pergunta">
+          <div class="perg-header">
+            <span class="perg-id">${p.id}</span>
+            <span class="perg-titulo">${p.titulo}</span>
+          </div>
+          <div class="perg-link-row">
+            <label>Pasta OneDrive:</label>
+            <input type="text" placeholder="Cole aqui o link da pasta de evidências"
+              value="${escAttr(linkVal)}"
+              onchange="salvarLink('${p.id}',this.value)"
+              onblur="salvarLink('${p.id}',this.value)">
+            ${linkHref}
+          </div>
+          <div class="ev-lista">${evsHtml}</div>
+          <button class="perg-add-btn" onclick="abrirModal('${p.id}','${escAttr(p.titulo)}')">+ Adicionar evidência</button>
+          ${sugsHtml}
+        </div>`;
+    }).join('');
+
+    if (!temaVisible) return;
+
+    const totalEvsTema = tema.perguntas.reduce((a,p)=>a+(getPergunta(p.id).evidencias||[]).length,0);
+    const isOpen = sectionsOpen[tema.id] !== false;
+
+    const div = document.createElement('div');
+    div.className = 'tema';
+    div.innerHTML = `
+      <div class="tema-header" onclick="toggleTema('${tema.id}',this)">
+        <span class="tema-id">${tema.id}</span>
+        <span class="tema-nome">${tema.nome}</span>
+        <span class="tema-badge">${totalEvsTema} evidência${totalEvsTema!==1?'s':''}</span>
+        <span class="tema-chevron ${isOpen?'open':''}">▶</span>
+      </div>
+      <div class="tema-body ${isOpen?'open':''}" id="body-${tema.id}">${pergsHtml}</div>`;
+    container.appendChild(div);
+  });
+
+  atualizarMetricas();
+
+  // Diagnóstico Complementar
+  renderDiagnostico();
+}
+
+function renderDiagnostico() {
+  const buscaPid = document.getElementById('busca').value;
+  const fStatus  = document.getElementById('filtroStatus').value;
+  const fTema    = document.getElementById('filtroTema').value;
+  if (fTema) return; // ocultar se filtro de tema ativo
+
+  let dcDiv = document.getElementById('dc-section');
+  if (!dcDiv) {
+    dcDiv = document.createElement('div');
+    dcDiv.id = 'dc-section';
+    dcDiv.className = 'dc-section';
+    document.getElementById('container').appendChild(dcDiv);
+  }
+
+  const DC_PERGS = [
+    { id:'DC26', titulo:'Relacione todos os sistemas judiciais (sistema de processo eletrônico) utilizados atualmente pelo órgão e informe se foram adquiridos ou desenvolvidos interna ou externamente.', nota:'Item 26 do Diagnóstico Complementar' },
+    { id:'DC28', titulo:'Relacione todos os sistemas de processos físico judiciais utilizados atualmente pelo órgão e informe se foram adquiridos ou desenvolvidos interna ou externamente.', nota:'Item 28 do Diagnóstico Complementar' },
+    { id:'DC29', titulo:'Relacione os sistemas administrativos utilizados atualmente pelo órgão e informe se foram adquiridos ou desenvolvidos interna ou externamente (No máximo 5 sistemas).', nota:'Item 29 do Diagnóstico Complementar' }
+  ];
+
+  const DC_SUGS = {
+    DC26: [
+      { nome:'PJe — Processo Judicial Eletrônico (desenvolvimento externo — TSE/CNJ)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema judicial eletrônico utilizado pelo TRE-ES. Confirmar versão em produção e informar se há customizações locais.', status:'pronta' }
+    ],
+    DC28: [
+      { nome:'SADP — Sistema de Acompanhamento de Documentos e Processos (processos físicos)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema de processo físico judicial utilizado pelo TRE-ES. Informar modelo de aquisição/desenvolvimento.', status:'pronta' }
+    ],
+    DC29: [
+      { nome:'SEI — Sistema Eletrônico de Informações (externo — Ministério da Gestão)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema administrativo utilizado pelo TRE-ES. Confirmar versão e modelo de contratação.', status:'pronta' },
+      { nome:'SGRH — Sistema de Gestão de Recursos Humanos', autor:'STI', obs:'[✔ Produzida em 2025] Informar se é sistema próprio, adaptado ou adquirido de terceiros.', status:'pronta' },
+      { nome:'ASI — (informar nome completo e origem)', autor:'STI', obs:'[✔ Produzida em 2025] Confirmar nome completo e modelo de aquisição.', status:'pronta' },
+      { nome:'SIAFI — Sistema Integrado de Administração Financeira (externo — STN/Tesouro)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema financeiro federal. Confirmar versão e forma de acesso.', status:'pronta' },
+      { nome:'Smartshare — (gestão documental)', autor:'STI', obs:'[✔ Produzida em 2025] Confirmar modelo de contratação (licença, SaaS, etc.).', status:'pronta' }
+    ]
+  };
+
+  const isOpen = sectionsOpen['DC'] !== false;
+
+  const pergsHtml = DC_PERGS.map(p => {
+    const pd = getPergunta(p.id);
+    let evs = pd.evidencias || [];
+    if (fStatus) evs = evs.filter(ev => ev.status === fStatus);
+    if (buscaPid && buscaPid !== p.id) return '';
+    const evsFiltradas = evs;
+
+    const linkVal = pd.link || '';
+    const linkHref = linkVal ? `<a href="${encodeURI(linkVal)}" target="_blank" rel="noopener">↗ Abrir pasta</a>` : '';
+
+    const evsHtml = evsFiltradas.length === 0
+      ? `<div class="sem-ev">Nenhuma evidência registrada${fStatus ? ' com este status' : ''}.</div>`
+      : evsFiltradas.map((ev,ei) => `
+          <div class="ev-card" id="evc-${ev.id}">
+            <div class="ev-row1">
+              <span class="ev-nome">${escHtml(ev.nome)}</span>
+              <span class="badge-status s-${ev.status}">${STATUS[ev.status]}</span>
+              <button class="btn-editar" title="Editar" onclick="editarEvidenciaIdx('${p.id}',${ei})">✎ Editar</button>
+              <button class="btn-excluir" title="Remover" onclick="deletarIdx('${p.id}',${ei})">×</button>
+            </div>
+            <div class="ev-autor">Por: ${escHtml(ev.autor)} · ${ev.data}</div>
+            ${ev.obs ? `<div class="ev-obs-text">${escHtml(ev.obs)}</div>` : ''}
+          </div>`).join('');
+
+    const sugsData = (DC_SUGS[p.id] || []);
+    const sugsHtml = sugsData.length === 0 ? '' : `
+      <div class="sugestoes-box">
+        <div class="sugestoes-titulo">Sugestões baseadas no ciclo 2025</div>
+        ${sugsData.map((s,si) => `
+          <div class="sug-card">
+            <span class="sug-nome">${escHtml(s.nome)}</span>
+            <span class="sug-obs">${escHtml(s.obs)}</span>
+            <button class="sug-add" onclick="adicionarSugestaoDC('${p.id}',${si})">+ Usar esta sugestão</button>
+          </div>`).join('')}
+      </div>`;
+
+    return `
+      <div class="dc-perg">
+        <div class="dc-perg-header">
+          <span class="dc-perg-id">${p.id.replace('DC','')}</span>
+          <span class="dc-perg-titulo">${p.titulo}</span>
+        </div>
+        <div class="dc-nota">${p.nota}</div>
+        <div class="perg-link-row">
+          <label>Pasta OneDrive:</label>
+          <input type="text" placeholder="Cole aqui o link da pasta de evidências"
+            value="${escAttr(linkVal)}"
+            onchange="salvarLink('${p.id}',this.value)"
+            onblur="salvarLink('${p.id}',this.value)">
+          ${linkHref}
+        </div>
+        <div class="ev-lista">${evsHtml}</div>
+        <button class="perg-add-btn" onclick="abrirModal('${p.id}','Item ${p.id.replace('DC','')} – Diagnóstico Complementar')">+ Adicionar evidência</button>
+        ${sugsHtml}
+      </div>`;
+  }).join('');
+
+  const totalEvsDC = DC_PERGS.reduce((a,p)=>a+(getPergunta(p.id).evidencias||[]).length,0);
+
+  dcDiv.innerHTML = `
+    <div class="dc-header" onclick="toggleDC(this)">
+      <span class="dc-label">DC</span>
+      <span class="dc-titulo">Diagnóstico Complementar</span>
+      <span class="tema-badge">${totalEvsDC} evidência${totalEvsDC!==1?'s':''}</span>
+      <span class="tema-chevron ${isOpen?'open':''}">▶</span>
+    </div>
+    <div class="dc-body ${isOpen?'open':''}" id="body-DC">${pergsHtml}</div>`;
+}
+
+function toggleDC(header) {
+  const body = document.getElementById('body-DC');
+  const chev = header.querySelector('.tema-chevron');
+  const nowOpen = body.classList.contains('open');
+  body.classList.toggle('open', !nowOpen);
+  chev.classList.toggle('open', !nowOpen);
+  sectionsOpen['DC'] = !nowOpen;
+}
+
+function toggleTema(id, header) {
+  const body = document.getElementById('body-'+id);
+  const chev = header.querySelector('.tema-chevron');
+  const nowOpen = body.classList.contains('open');
+  body.classList.toggle('open', !nowOpen);
+  chev.classList.toggle('open', !nowOpen);
+  sectionsOpen[id] = !nowOpen;
+}
+
+// ═══════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════
+function abrirModal(pid, titulo) {
+  modalPid = pid;
+  document.getElementById('modalTitulo').textContent = `Adicionar evidência — ${pid}`;
+  document.getElementById('fEid').value   = '';
+  document.getElementById('fNome').value  = '';
+  document.getElementById('fAutor').value = '';
+  document.getElementById('fObs').value   = '';
+  document.getElementById('fStatus').value = 'pronta';
+  document.querySelector('#modalOverlay .modal-actions .btn-primary').textContent = 'Salvar evidência';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('fNome').focus(), 60);
+}
+
+function editarEvidenciaIdx(pid, idx) {
+  const evs = getPergunta(pid).evidencias || [];
+  const ev  = evs[idx];
+  if (!ev) return;
+  modalPid = pid;
+  document.getElementById('modalTitulo').textContent = `Editar evidência — ${pid}`;
+  document.getElementById('fEid').value    = ev.id;
+  document.getElementById('fNome').value   = ev.nome;
+  document.getElementById('fAutor').value  = ev.autor;
+  document.getElementById('fObs').value    = ev.obs || '';
+  document.getElementById('fStatus').value = ev.status;
+  document.querySelector('#modalOverlay .modal-actions .btn-primary').textContent = 'Salvar alterações';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('fNome').focus(), 60);
+}
+
+function editarEvidencia(pid, eid) {
+  const evs = getPergunta(pid).evidencias || [];
+  const idx = evs.findIndex(e => e.id === eid);
+  if (idx >= 0) editarEvidenciaIdx(pid, idx);
+}
+
+function fecharModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  modalPid = null;
+}
+
+function confirmarEvidencia() {
+  const nome  = document.getElementById('fNome').value.trim();
+  const autor = document.getElementById('fAutor').value.trim();
+  if (!nome || !autor) { alert('Preencha o nome da evidência e o responsável.'); return; }
+  const eid = document.getElementById('fEid').value;
+  const pd  = getPergunta(modalPid);
+  if (eid) {
+    // modo edição
+    const ev = pd.evidencias.find(e => e.id === eid);
+    if (ev) {
+      ev.nome            = nome;
+      ev.autor           = autor;
+      ev.status          = document.getElementById('fStatus').value;
+      ev.obs             = document.getElementById('fObs').value.trim();
+      ev.ultimaAlteracao = new Date().toISOString();
+    }
+    toast('Evidência atualizada.');
+  } else {
+    // modo criação
+    pd.evidencias.push({
+      id:     'ev' + Date.now() + Math.floor(Math.random()*1000),
+      nome, autor,
+      status: document.getElementById('fStatus').value,
+      obs:    document.getElementById('fObs').value.trim(),
+      data:   new Date().toLocaleDateString('pt-BR'),
+      ultimaAlteracao: new Date().toISOString()
+    });
+    toast('Evidência registrada.');
+  }
+  dados.ultimaSalvagem = new Date().toISOString();
+  salvar();
+  fecharModal();
+  render();
+  atualizarSessaoInfo();
+}
+
+// ═══════════════════════════════════════════
+//  AÇÕES
+// ═══════════════════════════════════════════
+function _inserirSugestao(pid, sug) {
+  getPergunta(pid).evidencias.push({
+    id:     'sug' + Date.now() + Math.floor(Math.random()*9999),
+    nome:   sug.nome,
+    autor:  sug.autor || 'STI',
+    status: sug.status || 'pronta',
+    obs:    sug.obs || '',
+    data:   new Date().toLocaleDateString('pt-BR')
+  });
+  dados.ultimaSalvagem = new Date().toISOString();
+  salvar();
+  render();
+  atualizarMetricas();
+  atualizarSessaoInfo();
+  toast('Sugestão adicionada como evidência.');
+}
+function adicionarSugestaoIdx(pid, idx) {
+  const sug = ((SUGESTOES_2026[pid] || {}).evidencias || [])[idx];
+  if (sug) _inserirSugestao(pid, sug);
+}
+function adicionarSugestaoDC(pid, idx) {
+  const DC_SUGS_MAP = {
+    DC26: [
+      { nome:'PJe — Processo Judicial Eletrônico (desenvolvimento externo — TSE/CNJ)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema judicial eletrônico utilizado pelo TRE-ES. Confirmar versão em produção e informar se há customizações locais.', status:'pronta' }
+    ],
+    DC28: [
+      { nome:'SADP — Sistema de Acompanhamento de Documentos e Processos (processos físicos)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema de processo físico judicial utilizado pelo TRE-ES. Informar modelo de aquisição/desenvolvimento.', status:'pronta' }
+    ],
+    DC29: [
+      { nome:'SEI — Sistema Eletrônico de Informações (externo — Ministério da Gestão)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema administrativo utilizado pelo TRE-ES. Confirmar versão e modelo de contratação.', status:'pronta' },
+      { nome:'SGRH — Sistema de Gestão de Recursos Humanos', autor:'STI', obs:'[✔ Produzida em 2025] Informar se é sistema próprio, adaptado ou adquirido de terceiros.', status:'pronta' },
+      { nome:'ASI — (informar nome completo e origem)', autor:'STI', obs:'[✔ Produzida em 2025] Confirmar nome completo e modelo de aquisição.', status:'pronta' },
+      { nome:'SIAFI — Sistema Integrado de Administração Financeira (externo — STN/Tesouro)', autor:'STI', obs:'[✔ Produzida em 2025] Sistema financeiro federal. Confirmar versão e forma de acesso.', status:'pronta' },
+      { nome:'Smartshare — (gestão documental)', autor:'STI', obs:'[✔ Produzida em 2025] Confirmar modelo de contratação (licença, SaaS, etc.).', status:'pronta' }
+    ]
+  };
+  const sug = (DC_SUGS_MAP[pid] || [])[idx];
+  if (sug) _inserirSugestao(pid, sug);
+}
+
+// ciclarStatus removido — status alterado via modal de edição
+
+function deletarIdx(pid, idx) {
+  if (!confirm('Remover esta evidência?')) return;
+  const pd = getPergunta(pid);
+  pd.evidencias.splice(idx, 1);
+  dados.ultimaSalvagem = new Date().toISOString();
+  salvar();
+  render();
+  atualizarMetricas();
+  atualizarSessaoInfo();
+  toast('Evidência removida.');
+}
+
+function deletar(pid, eid) {
+  const evs = getPergunta(pid).evidencias || [];
+  const idx = evs.findIndex(e => e.id === eid);
+  if (idx >= 0) deletarIdx(pid, idx);
+}
+
+// ═══════════════════════════════════════════
+//  UTILITÁRIOS
+// ═══════════════════════════════════════════
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+
+// ═══════════════════════════════════════════
+//  SUGESTÕES 2026 — baseadas no ciclo 2025 TRE-ES
+//  Fonte: Relatório_Detalhado_de_Evidências_iGovTIC-Jud_2025.txt
+//  Legenda de obs: [✔ Produzida em 2025] = já existia; [★ Nova] = não coberta em 2025
+// ═══════════════════════════════════════════
+const SUGESTOES_2026 = {
+  P1: { evidencias: [
+    { nome:'Tabela de Macroprocessos de TIC — atualizada 2026', autor:'STI', obs:'[✔ Produzida em 2025] Atualizar extração da planilha de coordenação de macroprocessos com os responsáveis atuais (substitua Evidencia_TIC_Item_1_1.xlsx do ciclo anterior).', status:'pronta' },
+    { nome:'Tabela de Funções Gerenciais de TIC — atualizada 2026', autor:'STI', obs:'[✔ Produzida em 2025] Refazer extração com vínculos estatutários vigentes (Evidencia_TIC_Item_1_2.xlsx). Conferir se houve alterações de titular em cargos comissionados.', status:'pronta' },
+    { nome:'Organograma formal da STI publicado em 2025/2026', autor:'STI', obs:'[★ Nova] O relatório 2025 não apresentou organograma gráfico. Incluir organograma vigente como evidência complementar à estrutura gerencial.', status:'pronta' }
+  ]},
+  P2: { evidencias: [
+    { nome:'Portaria de atualização do rito orçamentário 2026', autor:'STI / Presidência', obs:'[✔ Produzida em 2025] Em 2025 foi apresentada a Portaria nº 270/2025. Emitir ou confirmar portaria equivalente para o ciclo 2026.', status:'pronta' },
+    { nome:'Ata CETIC — validação do orçamento de TIC 2027', autor:'STI', obs:'[✔ Produzida em 2025] Equivalente à Ata CETIC nº 59/2025. Registrar a ata do ciclo atual de planejamento orçamentário.', status:'pronta' },
+    { nome:'Painel JIRA — prints do portfólio de projetos ativos 2026', autor:'STI', obs:'[✔ Produzida em 2025] Atualizar prints do JIRA com status atual dos projetos. Incluir Canvas e Backlog dos projetos vigentes.', status:'pronta' },
+    { nome:'Ata CETIC de revisão da MGP (Metodologia de Gerenciamento de Projetos)', autor:'STI', obs:'[★ Nova] A MGP v2 foi apresentada em 2025. Se houver nova versão ou revisão formal em 2026, incluir a ata de aprovação como evidência de melhoria contínua.', status:'pronta' },
+    { nome:'Relatório de execução de contratos de TIC — 2025', autor:'STI / Área de contratos', obs:'[✔ Produzida em 2025] Equivalente à Ata de reunião inicial de gestão contratual (Resolução TRE-ES nº 63/2023). Incluir relatório de fiscalização de cada contrato ativo.', status:'pronta' }
+  ]},
+  P3: { evidencias: [
+    { nome:'Plano de Trabalho ENTIC-JUD 2026 — atualizado', autor:'STI', obs:'[✔ Produzida em 2025] Atualizar a planilha de ações A009 e A017 com o progresso do novo ciclo. Incluir prints de publicação no Connect-Jus.', status:'pronta' },
+    { nome:'Relatório de monitoramento do PDTIC 2026', autor:'STI', obs:'[✔ Produzida em 2025] Manter a periodicidade do relatório de monitoramento. O índice de 90,62% alcançado em 2025 deve ser mantido ou superado.', status:'pronta' },
+    { nome:'Matriz de riscos de TIC — ciclo 2026', autor:'STI', obs:'[★ Nova] O relatório 2025 não apresentou evidência de mapeamento de riscos específico de TIC. Produzir matriz de riscos formalmente aprovada pelo CETIC ou CGTIC.', status:'pronta' }
+  ]},
+  P4: { evidencias: [
+    { nome:'Atas do CGTIC — ciclo 2025 (jun a dez/2025)', autor:'STI / Presidência', obs:'[✔ Produzida em 2025] Em 2025 foram apresentadas atas de jun a nov/2024. Complementar com atas do segundo semestre de 2025.', status:'pronta' },
+    { nome:'Ato de renovação ou recomposição do CGTIC — 2025/2026', autor:'Presidência', obs:'[★ Nova] Verificar se o Ato Presidencial nº 285/2021 ainda está vigente ou se houve renovação formal da composição do colegiado. Apresentar o ato mais recente.', status:'pronta' }
+  ]},
+  P5: { evidencias: [
+    { nome:'Histórico de atas do CETIC — 2025 (até a mais recente)', autor:'STI', obs:'[✔ Produzida em 2025] Em 2025 foram apresentadas atas nº 41/2024 a 61/2025. Continuar o histórico com as atas subsequentes, comprovando regularidade quinzenal/mensal.', status:'pronta' },
+    { nome:'Portaria de atualização da composição do CETIC — 2025/2026', autor:'Presidência', obs:'[★ Nova] Confirmar se a Portaria nº 124/2021 ainda é o ato vigente ou se houve atualização. Apresentar o normativo mais recente.', status:'pronta' }
+  ]},
+  P6: { evidencias: [
+    { nome:'Planilha de execução do PDTIC 2021-2026 — extração 2026', autor:'STI', obs:'[✔ Produzida em 2025] Em 2025 o índice de execução era 90,62%. Atualizar a planilha com o percentual final do ciclo e as metas do próximo PDTIC.', status:'pronta' },
+    { nome:'Novo PDTIC ou instrumento de extensão do PDTIC pós-2026', autor:'STI / CGTIC', obs:'[★ Nova] O PDTIC 2021-2026 encerra em 2026. É necessário apresentar o novo plano diretor aprovado ou resolução de prorrogação/transição.', status:'pronta' }
+  ]},
+  P7: { evidencias: [
+    { nome:'Plano de Contratações de TIC 2026 — planilha atualizada', autor:'STI', obs:'[✔ Produzida em 2025] Equivalente à Evidencia_TIC_Item_7.xlsx. Atualizar com os itens do novo exercício: DOD, ETP e TR para cada contratação prevista.', status:'pronta' },
+    { nome:'Comprovação de adesão a soluções do PDPJ-Br / Repositório Nacional', autor:'STI', obs:'[★ Nova] O relatório 2025 não apresentou evidência de uso do Repositório Nacional de Soluções. Verificar se o TRE-ES utiliza ou planeja utilizar alguma solução do catálogo PDPJ-Br.', status:'pronta' }
+  ]},
+  P8: { evidencias: [
+    { nome:'PTD 2023-2026 — relatório de execução 2025 (índice de conclusão)', autor:'STI / CGTIC', obs:'[✔ Produzida em 2025] Em 2025 o índice era 90,91% (Ata CGTIC nº 56/2023). Atualizar com o percentual de execução acumulado ao final de 2025.', status:'pronta' },
+    { nome:'Instrumento de planejamento da transformação digital pós-2026', autor:'STI / CGTIC', obs:'[★ Nova] O PTD 2023-2026 encerra em 2026. Apresentar o novo documento de continuidade ou revisão formal do plano.', status:'pronta' }
+  ]},
+  P9: { evidencias: [
+    { nome:'Declaração formal de operação dos microsserviços Codex — 2026', autor:'STI', obs:'[✔ Produzida em 2025] Em 2025 foi apresentada declaração de 22/05/2025 com prints dos microsserviços (Conversor, Extrator, Prisma, Iris). Renovar declaração e atualizar versões dos microsserviços.', status:'pronta' },
+    { nome:'Prints dos microsserviços Codex com versões atualizadas', autor:'STI', obs:'[✔ Produzida em 2025] Atualizar capturas de tela com as versões mais recentes em produção (Conversor, Extrator 2.x, Prisma 2.x, Iris 2.x).', status:'pronta' }
+  ]},
+  P10: { evidencias: [
+    { nome:'Carta de Serviços 1º e 2º Graus — versão 2026', autor:'STI / Presidência', obs:'[✔ Produzida em 2025] Em 2025 foram 17 serviços digitalizados a 100%. Confirmar se houve adição de novos serviços no ciclo 2026 e atualizar a carta.', status:'pronta' },
+    { nome:'Planilha de serviços digitais — Evidencia_TIC_Item_10.xlsx atualizada', autor:'STI', obs:'[✔ Produzida em 2025] Atualizar planilha com eventuais novos serviços incluídos na carta.', status:'pronta' }
+  ]},
+  P11: { evidencias: [
+    { nome:'Relatório de testes de restauração de backup — 2025/2026', autor:'STI / Infraestrutura', obs:'[★ Nova] O relatório 2025 mencionou testes de restauração de banco de dados (P24), mas não há evidência dedicada de PCN/backup em P11. Produzir relatório formal de testes.', status:'pronta' },
+    { nome:'Plano de Continuidade de Negócios (PCN) — versão vigente', autor:'STI', obs:'[★ Nova] Não houve evidência de PCN formal no relatório 2025 além da declaração de réplica no PRODEST. Apresentar o PCN institucionalizado com aprovação formal.', status:'pronta' }
+  ]},
+  P12: { evidencias: [
+    { nome:'Captura de tela do Painel CNJ — Juízo 100% Digital (extração 2026)', autor:'STI', obs:'[✔ Produzida em 2025] Em 2025 foram 62 unidades com 100% de implementação. Atualizar a captura para o ciclo 2026.', status:'pronta' },
+    { nome:'Declaração de inaplicabilidade dos subitens 12.2 e 12.3', autor:'STI', obs:'[✔ Produzida em 2025] Verificar se as diretrizes do ciclo 2026 mantêm a dispensa para a Justiça Eleitoral. Se sim, renovar a declaração.', status:'pronta' }
+  ]},
+  P13: { evidencias: [
+    { nome:'Capturas de tela da plataforma Sinapses — participação TRE-ES 2026', autor:'STI', obs:'[✔ Produzida em 2025] Renovar as capturas de tela comprovando uso ativo do Sinapses no ciclo atual.', status:'pronta' },
+    { nome:'Inventário de modelos de IA em uso ou em desenvolvimento no TRE-ES', autor:'STI', obs:'[★ Nova] Complementar o uso do Sinapses com um registro interno dos modelos de IA utilizados, suas finalidades e responsáveis — alinhado à Resolução CNJ nº 332/2020 e à futura regulação de IA no Judiciário.', status:'pronta' },
+    { nome:'Relatório ou nota sobre conformidade com LGPD — 2025/2026', autor:'STI / DPO', obs:'[★ Nova] O relatório 2025 não apresentou evidência específica de LGPD. Produzir relatório do Encarregado de Dados (DPO) ou nota de conformidade com a Lei nº 13.709/2018.', status:'pronta' }
+  ]},
+  P14: { evidencias: [
+    { nome:'Relatório de atendimentos da central de TI — 2025 (SLA/ANO)', autor:'STI / SRFF / SGIR', obs:'[✔ Produzida em 2025] Em 2025: 1.966 atendimentos, 97,40% dentro do SLA. Reproduzir relatório equivalente para 2025 completo e início de 2026.', status:'pronta' },
+    { nome:'Acordos de Nível de Serviço (ANS/SLA) vigentes — SRFF e SGIR', autor:'STI', obs:'[✔ Produzida em 2025] Verificar se os ANS foram revisados ou permanecem os mesmos. Apresentar versão vigente.', status:'pronta' }
+  ]},
+  P15: { evidencias: [
+    { nome:'Relatório de satisfação dos usuários da Central de Atendimento — 2025', autor:'STI', obs:'[✔ Produzida em 2025] Em 2025: 8.645 avaliações, índice de 99,88%. Atualizar com os dados de 2025 completo. Manter evidência do volume e do índice.', status:'pronta' }
+  ]},
+  P16: { evidencias: [
+    { nome:'Ato PRE nº 109/2025 — Política de Gestão de Pessoas de TI (confirmar vigência)', autor:'Presidência', obs:'[✔ Produzida em 2025] Confirmar que o Ato nº 109/2025 continua sendo o normativo vigente ou se houve atualização em 2026.', status:'pronta' },
+    { nome:'Critérios de avaliação para funções de liderança de TIC — edital ou normativo 2026', autor:'STI / SGP', obs:'[★ Nova] Complementar com evidência de aplicação prática dos critérios (ex: processo seletivo interno ou avaliação de competências realizada).', status:'pronta' }
+  ]},
+  P17: { evidencias: [
+    { nome:'Lista de movimentações definitivas de servidores de TIC — 2025', autor:'STI / SGP', obs:'[✔ Produzida em 2025] Atualizar a planilha Evidencia_TIC_Item_17_3.xlsx com os dados de saída definitiva ocorridos em 2025.', status:'pronta' },
+    { nome:'Plano de capacitação e retenção de talentos de TIC — 2026', autor:'STI / SGP', obs:'[★ Nova] O relatório 2025 só apresentou dados de rotatividade. Incluir evidência de ação proativa de retenção (plano de capacitação, bolsas, trilhas de desenvolvimento).', status:'pronta' }
+  ]},
+  P18: { evidencias: [
+    { nome:'Declaração formal de réplica de data center no PRODEST — 2026', autor:'STI / Infraestrutura', obs:'[✔ Produzida em 2025] Em 2025 foi apresentada declaração de 21/05/2025. Renovar a declaração para o ciclo 2026 e, se possível, incluir SLA formal com o PRODEST.', status:'pronta' },
+    { nome:'Relatório de testes de failover ou DR — 2025/2026', autor:'STI / Infraestrutura', obs:'[★ Nova] A declaração de réplica comprova a existência da infraestrutura, mas não a efetividade. Produzir relatório de teste de recuperação de desastre realizado.', status:'pronta' }
+  ]},
+  P19: { evidencias: [
+    { nome:'Contrato TSE nº 86/2022 — aditivo ou confirmação de vigência 2026', autor:'STI / Contratos', obs:'[✔ Produzida em 2025] Confirmar vigência do contrato Serpro Multicloud. Apresentar aditivo ou declaração de continuidade.', status:'pronta' },
+    { nome:'Catálogo de serviços em nuvem utilizados pelo TRE-ES — 2026', autor:'STI / Infraestrutura', obs:'[★ Nova] Complementar o contrato com um inventário dos serviços de nuvem efetivamente em uso (AWS, Azure, GCP via Serpro Multicloud).', status:'pronta' }
+  ]},
+  P20: { evidencias: [
+    { nome:'Dashboards AWS — CUDOS e Optics Explorer (extração 2026)', autor:'STI / Infraestrutura', obs:'[✔ Produzida em 2025] Atualizar os prints dos dashboards de otimização de custos cloud. Incluir demonstrativo de economia acumulada.', status:'pronta' },
+    { nome:'Relatório de FinOps — economia gerada em 2025', autor:'STI / Infraestrutura', obs:'[★ Nova] Complementar os dashboards com relatório narrativo de otimizações realizadas (DynamoDB, ECS e outros recursos otimizados).', status:'pronta' }
+  ]},
+  P21: { evidencias: [
+    { nome:'Relatório de atendimentos e SLA — Gerenciamento de Serviços de TIC 2025/2026', autor:'STI / SRFF / SGIR', obs:'[✔ Produzida em 2025] Em 2025 foram apresentados ANS das áreas SRFF e SGIR com relatório de 1.966 atendimentos e 97,40% dentro do SLA (evidência registrada em P14 no ciclo 2025). No ciclo 2026 esse item migrou para P21. Atualizar o relatório com dados do período atual.', status:'pronta' },
+    { nome:'Catálogo de Serviços de TIC — versão vigente', autor:'STI', obs:'[★ Nova] Apresentar o catálogo formal de serviços de TIC com os itens disponibilizados às áreas clientes, incluindo canais de solicitação e prazos de atendimento (SLA por tipo de serviço).', status:'pronta' },
+    { nome:'Ferramenta de ITSM — prints do sistema de chamados em operação', autor:'STI', obs:'[★ Nova] Incluir capturas de tela da ferramenta de gerenciamento de serviços (ex: GLPI, ServiceNow, Jira Service Management) demonstrando operação ativa e rastreabilidade dos chamados.', status:'pronta' }
+  ]},
+  P22: { evidencias: [
+    { nome:'Ato de instituição do CGSI — versão vigente', autor:'STI / Presidência', obs:'[✔ Produzida em 2025] Em 2025 foi apresentado o ATO nº 171/2024 que designou o Gestor e a CSI. Confirmar se o CGSI foi formalmente instituído por ato próprio ou se é regido pelo mesmo normativo.', status:'pronta' },
+    { nome:'Atas de reuniões do CGSI — ciclo 2025/2026', autor:'STI / CSI', obs:'[✔ Produzida em 2025] As atas da CSI foram apresentadas em 2025 (Ata CSI nº 29/2024). Apresentar atas subsequentes do colegiado de governança de segurança da informação comprovando periodicidade e deliberações.', status:'pronta' },
+    { nome:'Composição atualizada do CGSI — membros e competências', autor:'STI / Presidência', obs:'[★ Nova] Incluir documento formal com a composição atual do CGSI (presidente, secretário, membros), suas competências e o regimento interno ou normativo equivalente.', status:'pronta' }
+  ]},
+  P23: { evidencias: [
+    { nome:'Documentação técnica do MFA — F5 / Cisco Duo (versão atualizada)', autor:'STI / Segurança', obs:'[✔ Produzida em 2025] Verificar se houve atualização de versão ou escopo do MFA. Atualizar prints de acesso seguro (VPN, O365, PJe).', status:'pronta' },
+    { nome:'Protocolo de Prevenção a Incidentes Cibernéticos — versão 2026', autor:'STI / CSI', obs:'[✔ Produzida em 2025] Verificar se o protocolo apresentado com a Ata CSI nº 29/2024 foi atualizado. Apresentar versão mais recente.', status:'pronta' },
+    { nome:'Ata do CSI — reuniões de 2025/2026', autor:'STI / CSI', obs:'[✔ Produzida em 2025] Complementar com atas da CSI posteriores à nº 29/2024 para comprovar continuidade das ações de segurança.', status:'pronta' },
+    { nome:'Relatório de vulnerabilidades ou pentest — 2025/2026', autor:'STI / CSI', obs:'[★ Nova] Fortalecer a evidência de segurança com relatório de varredura de vulnerabilidades ou teste de intrusão realizado no período.', status:'pronta' },
+    { nome:'Política de backup e evidência de testes de restauração', autor:'STI / Infraestrutura', obs:'[★ Nova] Incluir aqui evidência específica da política de backup e testes de restauração como controle de segurança da infraestrutura crítica.', status:'pronta' }
+  ]},
+  P24: { evidencias: [
+    { nome:'PGR-TI (Plano de Gestão de Riscos de TI) — versão 2025/2026', autor:'STI', obs:'[✔ Produzida em 2025] Apresentar versão atualizada do PGR-TI aprovada pelo CETIC (Ata CETIC nº 44/2024 foi a referência em 2025).', status:'pronta' },
+    { nome:'Prints do Zabbix — monitoramento de infraestrutura 2026', autor:'STI / Infraestrutura', obs:'[✔ Produzida em 2025] Atualizar as capturas do Zabbix e dos equipamentos Dell com dados do ciclo atual.', status:'pronta' }
+  ]},
+  P25: { evidencias: [
+    { nome:'Resolução TSE nº 23.644/2021 — confirmação de adoção integral pelo TRE-ES', autor:'STI / CSI', obs:'[✔ Produzida em 2025] Confirmar que a PSI permanece sendo a Resolução TSE nº 23.644/2021 ou se foi emitida norma substituta/complementar.', status:'pronta' },
+    { nome:'Memorando da CSI — comprovação de revisão periódica da PSI em 2025/2026', autor:'STI / CSI', obs:'[✔ Produzida em 2025] Equivalente ao Memorando nº 183/CSI. Emitir novo memorando ou despacho comprovando revisão no ciclo atual (art. 9º da Resolução TSE nº 23.644/2021).', status:'pronta' },
+    { nome:'Contrato de serviços de segurança — vigente (equivalente ao Contrato nº 15/2025)', autor:'STI / Contratos', obs:'[✔ Produzida em 2025] Confirmar vigência ou apresentar novo contrato de serviços de segurança da informação.', status:'pronta' }
+  ]},
+  P26: { evidencias: [
+    { nome:'Declaração de conformidade com padrões de interoperabilidade — ciclo 2026', autor:'STI', obs:'[✔ Produzida em 2025] Renovar a Declaração de Conformidade Técnica com a Resolução Conjunta CNJ/CNMP nº 3/2013 para o novo ciclo.', status:'pronta' }
+  ]},
+  P27: { evidencias: [
+    { nome:'Manual de Processo de Desenvolvimento de Software (MGP) — versão vigente', autor:'STI', obs:'[✔ Produzida em 2025] Em 2025 foi a v4.0 (abril/2025). Apresentar a versão em vigor no ciclo 2026 ou confirmar que a v4.0 permanece ativa.', status:'pronta' },
+    { nome:'Ata CETIC de aprovação da versão vigente da MGP', autor:'STI', obs:'[✔ Produzida em 2025] Equivalente à Ata CETIC nº 31/2023. Se houver nova versão, apresentar a ata de aprovação correspondente.', status:'pronta' },
+    { nome:'Termo de aceite de entrega de sistema — 2025/2026', autor:'STI / Área demandante', obs:'[✔ Produzida em 2025] Equivalente ao Termo de Aceite do Sistema JANO. Apresentar termo de aceite de outro sistema entregue no ciclo 2026.', status:'pronta' }
+  ]},
+  P28: { evidencias: [
+    { nome:'Ata CETIC mais recente — comprovando responsabilidade da área negocial (2025/2026)', autor:'STI', obs:'[✔ Produzida em 2025] Equivalente à Ata CETIC nº 64/2025. Apresentar ata subsequente no ciclo 2026.', status:'pronta' },
+    { nome:'Formulário de solicitação e relatório do JIRA — novo projeto 2026', autor:'STI / Área demandante', obs:'[✔ Produzida em 2025] Complementar com novo caso de demanda liderada por área negocial no ciclo 2026 (similar ao caso do Sistema JANO / SGP).', status:'pronta' },
+    { nome:'Termo de aceite assinado pelo gestor de produto — entrega 2026', autor:'Gestor do Produto / Área negocial', obs:'[✔ Produzida em 2025] Atualizar com termo de aceite de entrega realizada no novo ciclo.', status:'pronta' }
+  ]}
+};
+
+function carregarSugestoes() {
+  let inseridas = 0;
+  Object.entries(SUGESTOES_2026).forEach(([pid, pd]) => {
+    const perg = getPergunta(pid);
+    (pd.evidencias || []).forEach(sug => {
+      perg.evidencias.push({
+        id:     'sug' + pid + Date.now() + Math.floor(Math.random()*9999),
+        nome:   sug.nome,
+        autor:  sug.autor,
+        status: sug.status || 'pronta',
+        obs:    sug.obs || '',
+        data:   new Date().toLocaleDateString('pt-BR')
+      });
+      inseridas++;
+    });
+  });
+  dados.sessao = 'TRE-ES — ciclo iGovTIC-JUD 2026';
+  document.getElementById('sessaoNome').value = dados.sessao;
+  dados.ultimaSalvagem = new Date().toISOString();
+  salvar();
+  render();
+  atualizarMetricas();
+  atualizarSessaoInfo();
+  toast(inseridas + ' sugestões carregadas. Ajuste status e responsáveis conforme necessário.');
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+(function init() {
+  // select de perguntas
+  const selPerg = document.getElementById('busca');
+  TEMAS.forEach(t => {
+    const grp = document.createElement('optgroup');
+    grp.label = t.id + ' – ' + t.nome;
+    t.perguntas.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.id + ' – ' + p.titulo;
+      grp.appendChild(opt);
+    });
+    selPerg.appendChild(grp);
+  });
+  // DC no select de perguntas
+  const grpDC = document.createElement('optgroup');
+  grpDC.label = 'Diagnóstico Complementar';
+  [{id:'DC26',titulo:'Sistemas judiciais eletrônicos'},{id:'DC28',titulo:'Sistemas de processo físico'},{id:'DC29',titulo:'Sistemas administrativos'}].forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.id + ' – ' + p.titulo;
+    grpDC.appendChild(opt);
+  });
+  selPerg.appendChild(grpDC);
+
+  // filtro de temas
+  const sel = document.getElementById('filtroTema');
+  TEMAS.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t.id;
+    opt.textContent = t.id + ' – ' + t.nome;
+    sel.appendChild(opt);
+  });
+
+  carregar();
+
+  render();
+})();
+</script>
+</body>
+</html>
